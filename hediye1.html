@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karanlık Kronoloji: 18. Yaş Anısına</title>
+    
+    <style>
+        /* Google Font'u Base64 yerine direkt link ile çekmek daha kısa tutar. */
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+        
+        body {
+            background-color: #000000;
+            color: #EEEEEE;
+            font-family: 'Cinzel', serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 90%;
+            padding: 30px 20px;
+            border: 1px solid #333333;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            background-color: rgba(17, 17, 17, 0.8);
+            z-index: 10;
+        }
+        
+        .header {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+            text-transform: uppercase;
+        }
+
+        #current-time {
+            font-size: 3.5em;
+            font-weight: 700;
+            letter-spacing: 5px;
+            margin-bottom: 30px;
+            color: #FFFFFF;
+        }
+
+        .counter-section {
+            margin: 20px 0;
+            border-top: 1px dashed #333333;
+            padding-top: 20px;
+        }
+
+        .counter-section p {
+            font-size: 1em;
+            margin: 10px 0;
+        }
+
+        .counter-value {
+            font-size: 1.8em;
+            color: #FF0000;
+            font-weight: 700;
+        }
+
+        /* --- KÖŞE GÖRSEL TASARIMLARI (SVG ile) --- */
+        
+        .corner-element {
+            position: absolute;
+            width: 80px; /* Görsel Boyutu */
+            height: 80px;
+            opacity: 0.6; /* Hafif saydamlık */
+            z-index: 5;
+            transition: opacity 0.3s;
+        }
+
+        .corner-element:hover {
+            opacity: 0.9;
+        }
+
+        /* SVG SİMGELERİ (Base64/URL Encoded) */
+
+        /* Kuru Kafa SVG Simgesi (Çok Basit Gotik Çizim) */
+        /* Beyaz tonlu, kırmızı göz vurgulu */
+        .skull-icon {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-1.74.57-3.34 1.54-4.66L9 9l-2 4h10l-2-4 3.46-3.66c.97 1.32 1.54 2.92 1.54 4.66 0 4.41-3.59 8-8 8zm-4.5-8c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm9 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z'/><circle cx='7.5' cy='9.5' r='1' fill='red'/><circle cx='16.5' cy='9.5' r='1' fill='red'/></svg>");
+        }
+
+        /* Gül SVG Simgesi (Çok Basit Gotik Çizim) */
+        /* Beyaz tonlu, kırmızı gövde vurgulu */
+        .rose-icon {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z'/><path fill='red' d='M12 7c-1.33 0-2.5.83-3.13 2H5v2h1.87c-.63 1.17-.63 2.5 0 3.63H5v2h3.87c.63 1.17 1.8 2 3.13 2s2.5-.83 3.13-2H19v-2h-1.87c.63-1.13.63-2.5 0-3.63H19V9h-3.87c-.63-1.17-1.8-2-3.13-2z'/></svg>");
+        }
+
+        /* Konumlandırma */
+        
+        /* Sol Üst (Kuru Kafa) */
+        .top-left { top: 10px; left: 10px; transform: rotate(-15deg); }
+        /* Sağ Üst (Gül) */
+        .top-right { top: 10px; right: 10px; transform: rotate(15deg); }
+        /* Sol Alt (Gül) */
+        .bottom-left { bottom: 10px; left: 10px; transform: rotate(-15deg); }
+        /* Sağ Alt (Kuru Kafa) */
+        .bottom-right { bottom: 10px; right: 10px; transform: rotate(15deg); }
+
+
+        /* Mobil Cihazlar İçin Ayarlama */
+        @media (max-width: 600px) {
+            #current-time { font-size: 2.5em; }
+            .counter-value { font-size: 1.5em; }
+            .corner-element { width: 50px; height: 50px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="corner-element skull-icon top-left"></div>
+    <div class="corner-element rose-icon top-right"></div>
+    <div class="corner-element rose-icon bottom-left"></div>
+    <div class="corner-element skull-icon bottom-right"></div>
+    
+    <div class="container">
+        <div class="header">
+            18. Yaşın Karanlık Gözcüsü
+        </div>
+        
+        <div id="current-time">00:00:00</div>
+
+        <div class="counter-section">
+            <p>🖤 Sevgili Olma Gecemizden Bugüne Geçen Süre (14 Kasım 2025):</p>
+            <div id="sevgili-counter" class="counter-value">...hesaplanıyor...</div>
+        </div>
+
+        <div class="counter-section">
+            <p>🕯️ Ruhlarımızın İlk Tanıştığı Günden Bugüne Geçen Süre (27 Mayıs 2025):</p>
+            <div id="tanisma-counter" class="counter-value">...hesaplanıyor...</div>
+        </div>
+    </div>
+
+    <script>
+        // TARİHLER: 27 Mayıs 2025 ve 14 Kasım 2025
+        const tanismaTarihiStr = '2025-05-27T00:00:00'; 
+        const sevgiliTarihiStr = '2025-11-14T00:00:00'; 
+
+        const tanismaTarihi = new Date(tanismaTarihiStr);
+        const sevgiliTarihi = new Date(sevgiliTarihiStr);
+
+        function updateAll() {
+            const now = new Date();
+
+            // 1. Saat Güncelleme
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+            const timeString = now.toLocaleTimeString('tr-TR', timeOptions);
+            document.getElementById('current-time').innerText = timeString;
+
+            // 2. Sayaç Güncelleme (Geçen Süreyi Hesaplama)
+            function calculateDuration(startDate) {
+                const diffMs = now - startDate;
+                if (diffMs < 0) return "Bu anın gelmesini bekliyoruz...";
+
+                const msInDay = 1000 * 60 * 60 * 24;
+                const msInHour = 1000 * 60 * 60;
+                const msInMinute = 1000 * 60;
+
+                const days = Math.floor(diffMs / msInDay);
+                const hours = Math.floor((diffMs % msInDay) / msInHour);
+                const minutes = Math.floor((diffMs % msInHour) / msInMinute);
+                const seconds = Math.floor((diffMs % msInMinute) / 1000);
+
+                return `${days} Gün, ${hours} Saat, ${minutes} Dakika, ${seconds} Saniye`;
+            }
+
+            document.getElementById('sevgili-counter').innerText = calculateDuration(sevgiliTarihi);
+            document.getElementById('tanisma-counter').innerText = calculateDuration(tanismaTarihi);
+        }
+
+        // Her saniye güncelle
+        setInterval(updateAll, 1000);
+        updateAll(); 
+    </script>
+
+</body>
+</html>
